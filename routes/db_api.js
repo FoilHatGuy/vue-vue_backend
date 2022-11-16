@@ -1,17 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { Pool, Client } = require('pg')
-
-const pool = new Pool()
-
-const client = new Client()
+const db = require('../db')
 
 /* GET users listing. */
-router.get('/', async function(req, res, next) {
-    await client.connect()
-    let r = await client.query('SELECT NOW()')
-    await client.end()
-    res.send();
+router.get('/', async (req, res, next) => {
+    let result = await db.query('SELECT * FROM users', [])
+    console.log(result)
+    res.send(result.rows)
+
 });
 
 module.exports = router;
