@@ -9,8 +9,8 @@ module.exports = {
         const start = Date.now()
         const res = await pool.query(text, params)
         const duration = Date.now() - start
-        console.log('executed query', { text, duration, rows: res.rowCount })
-        return Promise.resolve(res)
+        console.log('executed query', { text, duration, rows: res })
+        return res
     },
     async getClient() {
         const client = await pool.connect()
