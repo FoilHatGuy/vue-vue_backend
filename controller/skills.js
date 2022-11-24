@@ -1,8 +1,18 @@
 
 const db = require('../db')
+const format = require("pg-format");
 module.exports = {
     async getAll(){
         return await db.query('SELECT * FROM skills', [])
+    },
+
+    async delete(id) {
+        return db.query(`DELETE FROM skills WHERE skills.id = $1`, [id])
+    },
+
+    async update(id, name, desc) {
+        return db.query(`update skills set "name" = $2, description = $3 
+WHERE id = $1`, [id, name, desc?desc:null])
     },
 
     async insert(name, desc) {

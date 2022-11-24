@@ -29,6 +29,21 @@ function init(config) {
         res.send(result)
     });
 
+    router.post('/:id/edit', async (req, res, next) => {
+        ctrl.update(req.params.id, req.body.project.name,
+            req.body.project.description, req.body.project.start,
+            req.body.project.end)
+            .then((r)=>res.status(200).send(r))
+            .catch((r)=>res.status(400).send(r))
+        // res.status(400).send(r)
+    });
+
+    router.post('/:id/delete', async (req, res, next) => {
+        let user = ctrl.delete(req.params.id)
+        user.then((r)=>res.status(200).send(r))
+            .catch((r)=>res.status(400).send(r))
+    });
+
     router.get('/:id', async (req, res, next) => {
         // console.log(parseInt(req.params.id, 10))
 

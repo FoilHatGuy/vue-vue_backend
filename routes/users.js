@@ -45,7 +45,7 @@ function init(config){
             req.body.user.department, req.body.user.position)
         if (req.body.add.length > 0 || req.body.del.length > 0) {
             console.log(req.body)
-            let skills = ctrl.updateSkills(req.params.id, req.body.add, req.body.del)
+            let skills = ctrl.updateUserSkills(req.params.id, req.body.add, req.body.del)
             Promise.all([user, skills])
                 .then((r)=>res.status(200).send(r))
         }
@@ -77,8 +77,9 @@ function init(config){
 
         if (parseInt(req.params.id, 10)) {
             try {
-            ctrl.getIdSkills([parseInt(req.params.id, 10)])
+            ctrl.getIdSkills(parseInt(req.params.id, 10))
                 .then((r)=>{
+                    console.log(r.rows)
                     if (r.rows[0].skill === null)
                         r.rows = []
                     return r

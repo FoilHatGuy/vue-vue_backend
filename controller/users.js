@@ -20,7 +20,7 @@ WHERE id = $1`, [id, name, surn, patr, dep?dep:null, pos?pos:null])
         return db.query(`DELETE FROM users WHERE users.id = $1`, [id])
     },
 
-    async updateSkills(id, add, del) {
+    async updateUserSkills(id, add, del) {
         let Plist = Array()
         if (add.length > 0) {
             let added = add.map((val) => {
