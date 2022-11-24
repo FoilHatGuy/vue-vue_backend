@@ -1,7 +1,7 @@
 const { Pool } = require('pg')
 const fs = require('fs');
 const cred = JSON.parse(fs.readFileSync('cred.json', 'utf8'));
-console.log(cred)
+// console.log(cred)
 const pool = new Pool(cred)
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
         const start = Date.now()
         const res = await pool.query(text, params)
         const duration = Date.now() - start
-        console.log('executed query', { text, duration, rows: res })
+        // console.log('executed query', { text, duration, rows: res.rows })
         return res
     },
     async getClient() {

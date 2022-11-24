@@ -1,20 +1,28 @@
 const express = require('express');
-const ctrl = require('../controller/skills')
+const ctrl = require('../controller/departments')
 
 // for each: GET, POST(add) /:id
 function init(config) {
     const router = express.Router();
 
     router.post('/', async (req, res, next) => {
-
-        if(req.body.name && req.body.name.length > 0 &&
-            req.body.description && req.body.description.length > 0){
-
-            let result = await ctrl.insert(req.body.name, req.body.description)
-            res.status(200).send(result.rows)
+        if(req.body.name && req.body.name.length > 0) {
+            ctrl.insert(req.body.name)
+                .then((res) => {
+                    console.log(res.rows)
+                    return res.rows
+                })
+                .then((result) => {
+                    res.status(200).send(result)
+                })
+                .catch(() => {
+                    res.status(400).send({msg: "Error in database"})
+                })
         }
-        else
+        else {
+            console.log("Wrong name in ", req.body)
             res.status(400).send({msg: "Wrong data"})
+        }
     });
 
     router.get('/', async (req, res, next) => {
@@ -28,16 +36,9 @@ function init(config) {
         // console.log(parseInt(req.params.id, 10))
 
         if (parseInt(req.params.id, 10)) {
-            let skill = await ctrl.getId(parseInt(req.params.id, 10))
-            skill = skill.rows[0]
-            skill.description = skill.description ?
-                skill.description :
-                "No description"
-
+            let department = await ctrl.getId(parseInt(req.params.id, 10))
             let users = await ctrl.getIdUsers(parseInt(req.params.id, 10))
-            users = users.rows
-
-            let result = {skill:skill, users:users}
+            let result = {department:department.rows[0], users:users.rows}
             console.log(result)
             res.send(result)
         } else
