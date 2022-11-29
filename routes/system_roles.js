@@ -31,16 +31,30 @@ function init(config) {
     });
 
     router.get('/:id', async (req, res, next) => {
-        // console.log(parseInt(req.params.id, 10))
-
         if (parseInt(req.params.id, 10)) {
-            let access = await ctrl.getId(parseInt(req.params.id, 10))
-            let users = await ctrl.getIdUsers(parseInt(req.params.id, 10))
-            let result = {department:access.rows[0], users:users.rows}
-            console.log(result)
-            res.send(result)
+            Promise.all([ctrl.getId(parseInt(req.params.id, 10)),
+                ctrl.getIdUsers(parseInt(req.params.id, 10))])
+                .then((r)=>{
+                    return {system_role:r[0]["rows"][0], users:r[1]["rows"]}
+                }).then((r)=>{
+                console.log(r)
+                res.send(r)
+            }).catch((err)=>res.status(400).send({msg: err}))
         } else
             res.status(400).send({msg: "Id is not numeric"})
+    });
+
+    //todo: patch doesn't work, dunno why
+    router.post('/:id/edit', async (req, res, next) => {
+        ctrl.update(req.params.id, req.body.name)
+            .then((r)=>res.status(200).send(r))
+            .catch((r)=>res.status(400).send(r))
+    });
+
+    router.post('/:id/delete', async (req, res, next) => {
+        let user = ctrl.delete(req.params.id)
+        user.then((r)=>res.status(200).send(r))
+            .catch((r)=>res.status(400).send(r))
     });
 
     return router

@@ -10,17 +10,17 @@ module.exports = {
                                 values($1, $2, $3)`, [name, surn, patr])
     },
 
-    async updateUser(id, name, surn, patr, dep, pos) {
+    async update(id, name, surn, patr, dep, pos) {
         return db.query(`update users
 set "name" = $2, surname = $3, patronymic = $4, department = $5, "position" = $6
 WHERE id = $1`, [id, name, surn, patr, dep?dep:null, pos?pos:null])
     },
 
-    async deleteUser(id) {
+    async delete(id) {
         return db.query(`DELETE FROM users WHERE users.id = $1`, [id])
     },
 
-    async updateUserSkills(id, add, del) {
+    async updateSkills(id, add, del) {
         let Plist = Array()
         if (add.length > 0) {
             let added = add.map((val) => {

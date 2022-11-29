@@ -40,12 +40,12 @@ function init(config){
 
     //todo: patch doesn't work, dunno why
     router.post('/:id/edit', async (req, res, next) => {
-        let user = ctrl.updateUser(req.params.id, req.body.user.name,
+        let user = ctrl.update(req.params.id, req.body.user.name,
             req.body.user.surname, req.body.user.patronymic,
             req.body.user.department, req.body.user.position)
         if (req.body.add.length > 0 || req.body.del.length > 0) {
             console.log(req.body)
-            let skills = ctrl.updateUserSkills(req.params.id, req.body.add, req.body.del)
+            let skills = ctrl.updateSkills(req.params.id, req.body.add, req.body.del)
             Promise.all([user, skills])
                 .then((r)=>res.status(200).send(r))
         }
@@ -55,7 +55,7 @@ function init(config){
     });
 
     router.post('/:id/delete', async (req, res, next) => {
-        let user = ctrl.deleteUser(req.params.id)
+        let user = ctrl.delete(req.params.id)
         user.then((r)=>res.status(200).send(r))
             .catch((r)=>res.status(400).send(r))
     });
