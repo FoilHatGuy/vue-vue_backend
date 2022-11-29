@@ -6,7 +6,7 @@ function init(config) {
     const router = express.Router();
 
     router.post('/', async (req, res, next) => {
-        if(req.body.name && req.body.name.length > 0) {
+        if (req.body.name && req.body.name.length > 0) {
             ctrl.insert(req.body.name)
                 .then((res) => {
                     console.log(res.rows)
@@ -18,8 +18,7 @@ function init(config) {
                 .catch(() => {
                     res.status(400).send({msg: "Error in database"})
                 })
-        }
-        else {
+        } else {
             console.log("Wrong name in ", req.body)
             res.status(400).send({msg: "Wrong data"})
         }
@@ -38,7 +37,7 @@ function init(config) {
         if (parseInt(req.params.id, 10)) {
             let department = await ctrl.getId(parseInt(req.params.id, 10))
             let users = await ctrl.getIdUsers(parseInt(req.params.id, 10))
-            let result = {department:department.rows[0], users:users.rows}
+            let result = {department: department.rows[0], users: users.rows}
             console.log(result)
             res.send(result)
         } else

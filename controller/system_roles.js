@@ -1,6 +1,6 @@
 const db = require('../db')
 module.exports = {
-    async getAll(){
+    async getAll() {
         return await db.query('SELECT * FROM system_roles', [])
     },
 

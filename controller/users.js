@@ -13,7 +13,7 @@ module.exports = {
     async update(id, name, surn, patr, dep, pos) {
         return db.query(`update users
 set "name" = $2, surname = $3, patronymic = $4, department = $5, "position" = $6
-WHERE id = $1`, [id, name, surn, patr, dep?dep:null, pos?pos:null])
+WHERE id = $1`, [id, name, surn, patr, dep ? dep : null, pos ? pos : null])
     },
 
     async delete(id) {

@@ -1,7 +1,7 @@
-
 const db = require('../db')
+const format = require("pg-format");
 module.exports = {
-    async getAll(){
+    async getAll() {
         return await db.query('SELECT * FROM projects', [])
     },
 
@@ -11,7 +11,29 @@ module.exports = {
 
     async update(id, name, desc, start, end) {
         return db.query(`update projects set "name" = $2, description = $3, start = $4, end = $5 
-WHERE id = $1`, [id, name, desc?desc:null, start, end?end:null])
+WHERE id = $1`, [id, name, desc ? desc : null, start, end ? end : null])
+    },
+
+    async updateUsers(id, add, del) {
+        let Plist = Array()
+        if (add.length > 0) {
+            let added = add.map((v) => {
+                return [id, v.user, v.role]
+            });
+            console.log(add)
+            let query1 = format('INSERT INTO project_clearance (project, person, access) VALUES %L', added);
+            console.log(query1)
+            Plist.push(db.query(query1, []))
+        }
+        if (del.length > 0) {
+            let deleted = del.map((val) => {
+                return val
+            });
+            let query2 = format('DELETE FROM project_clearance WHERE person = $1 AND skill in (%L)', deleted);
+            console.log(query2)
+            Plist.push(db.query(query2, [id]))
+        }
+        return Promise.all(Plist)
     },
 
 
@@ -34,7 +56,7 @@ LEFT join
 ON p_cl.access = p.id WHERE p_cl.project = $1`, [id])
     },
 
-    formatDate(date){
+    formatDate(date) {
         return date ?
             date
                 .toISOString()

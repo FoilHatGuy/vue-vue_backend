@@ -7,13 +7,12 @@ function init(config) {
 
     router.post('/', async (req, res, next) => {
 
-        if(req.body.name && req.body.name.length > 0 &&
-            req.body.description && req.body.description.length > 0){
+        if (req.body.name && req.body.name.length > 0 &&
+            req.body.description && req.body.description.length > 0) {
 
             let result = await ctrl.insert(req.body.name, req.body.description)
             res.status(200).send(result.rows)
-        }
-        else
+        } else
             res.status(400).send({msg: "Wrong data"})
     });
 
@@ -25,17 +24,17 @@ function init(config) {
     });
 
     router.post('/:id/edit', async (req, res, next) => {
-        ctrl.update(req.params.id, req.body.user.name,
+        ctrl.update(req.params.id, req.body.name,
             req.body.user.description)
-            .then((r)=>res.status(200).send(r))
-            .catch((r)=>res.status(400).send(r))
+            .then((r) => res.status(200).send(r))
+            .catch((r) => res.status(400).send(r))
         // res.status(400).send(r)
     });
 
     router.post('/:id/delete', async (req, res, next) => {
         let user = ctrl.delete(req.params.id)
-        user.then((r)=>res.status(200).send(r))
-            .catch((r)=>res.status(400).send(r))
+        user.then((r) => res.status(200).send(r))
+            .catch((r) => res.status(400).send(r))
     });
 
     router.get('/:id', async (req, res, next) => {
@@ -51,7 +50,7 @@ function init(config) {
             let users = await ctrl.getIdUsers(parseInt(req.params.id, 10))
             users = users.rows
 
-            let result = {skill:skill, users:users}
+            let result = {skill: skill, users: users}
             console.log(result)
             res.send(result)
         } else

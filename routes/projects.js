@@ -6,15 +6,14 @@ function init(config) {
     const router = express.Router();
 
     router.post('/', async (req, res, next) => {
-        if(req.body.name && req.body.name.length > 0 &&
+        if (req.body.name && req.body.name.length > 0 &&
             req.body.description && req.body.description.length > 0 &&
             req.body.start && req.body.start.length > 0 &&
-            req.body.end && req.body.end.length > 0){
+            req.body.end && req.body.end.length > 0) {
 
             let result = await ctrl.insert(req.body.name, req.body.description, req.body.start, req.body.end)
             res.status(200).send(result.rows)
-        }
-        else
+        } else
             res.status(400).send({msg: "Wrong data"})
     });
 
@@ -30,18 +29,25 @@ function init(config) {
     });
 
     router.post('/:id/edit', async (req, res, next) => {
-        ctrl.update(req.params.id, req.body.project.name,
-            req.body.project.description, req.body.project.start,
-            req.body.project.end)
-            .then((r)=>res.status(200).send(r))
-            .catch((r)=>res.status(400).send(r))
+        let promises = []
+        promises.push(ctrl.update(req.params.id, req.body.name,
+            req.body.description, req.body.start,
+            req.body.end))
+        if (req.body.add.length > 0 || req.body.del.length > 0) {
+            console.log(req.body)
+            promises.push(ctrl.updateUsers(req.params.id, req.body.add, req.body.del))
+        }
+        Promise.all(promises)
+            .then((r) => res.status(200).send(r))
+            .catch((r) => res.status(400).send(r))
+
         // res.status(400).send(r)
     });
 
     router.post('/:id/delete', async (req, res, next) => {
         let user = ctrl.delete(req.params.id)
-        user.then((r)=>res.status(200).send(r))
-            .catch((r)=>res.status(400).send(r))
+        user.then((r) => res.status(200).send(r))
+            .catch((r) => res.status(400).send(r))
     });
 
     router.get('/:id', async (req, res, next) => {
@@ -54,7 +60,7 @@ function init(config) {
             project.end = ctrl.formatDate(project.end)
             let users = await ctrl.getIdUsers(parseInt(req.params.id, 10))
             users = users.rows
-            let result = {project:project, users:users}
+            let result = {project: project, users: users}
             console.log(result)
             res.send(result)
         } else
