@@ -1,16 +1,16 @@
 const express = require('express');
 const ctrl = require('../controller/project_roles')
-const {log} = require("debug");
+
 
 // for each: GET, POST(add) /:id
-function init(config) {
+function init() {
     const router = express.Router();
 
-    router.post('/', async (req, res, next) => {
+    router.post('/', async (req, res) => {
         if (req.body.name && req.body.name.length > 0) {
             ctrl.insert(req.body.name)
                 .then((res) => {
-                    console.log(res.rows)
+                    // console.log(res.rows)
                     return res.rows
                 })
                 .then((result) => res.status(200).send(result))
@@ -24,14 +24,14 @@ function init(config) {
         }
     });
 
-    router.get('/', async (req, res, next) => {
+    router.get('/', async (req, res) => {
         let result = await ctrl.getAll()
         console.log(result.rows)
 
         res.send(result.rows)
     });
 
-    router.get('/:id', async (req, res, next) => {
+    router.get('/:id', async (req, res) => {
         // console.log(parseInt(req.params.id, 10))
 
         if (parseInt(req.params.id, 10)) {
@@ -48,14 +48,14 @@ function init(config) {
     });
 
     //todo: patch doesn't work, dunno why
-    router.post('/:id/edit', async (req, res, next) => {
+    router.post('/:id/edit', async (req, res) => {
         ctrl.update(req.params.id, req.body.name)
             // .then((r)=>{console.log(req.body.name); return r})
             .then((r) => res.status(200).send(r))
             .catch((r) => res.status(400).send(r))
     });
 
-    router.post('/:id/delete', async (req, res, next) => {
+    router.post('/:id/delete', async (req, res) => {
         console.log(req.body, req.params)
         let user = ctrl.delete(req.params.id)
         user.then((r) => {

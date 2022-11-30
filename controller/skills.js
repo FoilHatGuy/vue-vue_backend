@@ -1,5 +1,5 @@
 const db = require('../db')
-const format = require("pg-format");
+require("pg-format");
 module.exports = {
     async getAll() {
         return await db.query('SELECT * FROM skills', [])

@@ -2,10 +2,10 @@ const express = require('express');
 const ctrl = require('../controller/positions')
 
 // for each: GET, POST(add) /:id
-function init(config) {
+function init() {
     const router = express.Router();
 
-    router.post('/', async (req, res, next) => {
+    router.post('/', async (req, res) => {
         if (req.body.name && req.body.name.length > 0) {
             ctrl.insert(req.body.name)
                 .then((res) => {
@@ -25,14 +25,14 @@ function init(config) {
         }
     });
 
-    router.get('/', async (req, res, next) => {
+    router.get('/', async (req, res) => {
         let result = await ctrl.getAll()
         console.log(result.rows)
 
         res.send(result.rows)
     });
 
-    router.get('/:id', async (req, res, next) => {
+    router.get('/:id', async (req, res) => {
         // console.log(parseInt(req.params.id, 10))
 
         if (parseInt(req.params.id, 10)) {
@@ -49,6 +49,22 @@ function init(config) {
                     res.status(400).send({msg: error}))
         } else
             res.status(400).send({msg: "Id is not numeric"})
+    });
+
+    router.post('/:id/edit', async (req, res) => {
+        console.log(req.body)
+        ctrl.update(req.params.id, req.body.name)
+            .then((r) => res.status(200).send(r))
+            .catch((r) => {
+                console.log(r)
+                res.status(400).send(r)
+            })
+    });
+
+    router.post('/:id/delete', async (req, res) => {
+        let user = ctrl.delete(req.params.id)
+        user.then((r) => res.status(200).send(r))
+            .catch((r) => res.status(400).send(r))
     });
 
     return router

@@ -2,10 +2,10 @@ const express = require('express');
 const ctrl = require('../controller/skills')
 
 // for each: GET, POST(add) /:id
-function init(config) {
+function init() {
     const router = express.Router();
 
-    router.post('/', async (req, res, next) => {
+    router.post('/', async (req, res) => {
 
         if (req.body.name && req.body.name.length > 0 &&
             req.body.description && req.body.description.length > 0) {
@@ -16,28 +16,31 @@ function init(config) {
             res.status(400).send({msg: "Wrong data"})
     });
 
-    router.get('/', async (req, res, next) => {
+    router.get('/', async (req, res) => {
         let result = await ctrl.getAll()
         console.log(result.rows)
 
         res.send(result.rows)
     });
 
-    router.post('/:id/edit', async (req, res, next) => {
+    router.post('/:id/edit', async (req, res) => {
+        console.log(req.body)
         ctrl.update(req.params.id, req.body.name,
-            req.body.user.description)
+            req.body.description)
             .then((r) => res.status(200).send(r))
-            .catch((r) => res.status(400).send(r))
-        // res.status(400).send(r)
+            .catch((r) => {
+                console.log(r)
+                res.status(400).send(r)
+            })
     });
 
-    router.post('/:id/delete', async (req, res, next) => {
+    router.post('/:id/delete', async (req, res) => {
         let user = ctrl.delete(req.params.id)
         user.then((r) => res.status(200).send(r))
             .catch((r) => res.status(400).send(r))
     });
 
-    router.get('/:id', async (req, res, next) => {
+    router.get('/:id', async (req, res) => {
         // console.log(parseInt(req.params.id, 10))
 
         if (parseInt(req.params.id, 10)) {

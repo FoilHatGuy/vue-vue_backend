@@ -1,3 +1,5 @@
+// noinspection JSUnresolvedVariable
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -34,7 +36,7 @@ let corsOptions = {
   methods: "PATCH,PUT,DELETE",
   credentials: true
 }
-let config = {cors: corsOptions}
+// let config = {cors: corsOptions}
 app.options('*', (req,res, next)=> {
   console.log('options')
   next()
@@ -47,14 +49,14 @@ app.use(function(req, res, next) {
   next();
 });
 app.use('/', indexRouter);
-app.use('/db_api/users', usersRouter(config));
-app.use('/db_api/skills', skillsRouter(config));
-app.use('/db_api/projects', projectsRouter(config));
-app.use('/db_api/positions', positionsRouter(config));
-app.use('/db_api/departments', departmentsRouter(config));
-app.use('/db_api/system_roles', systemRolesRouter(config));
-app.use('/db_api/project_roles', projectRolesRouter(config));
-app.use('/db_api', dbRouter(config));
+app.use('/db_api/users', usersRouter());
+app.use('/db_api/skills', skillsRouter());
+app.use('/db_api/projects', projectsRouter());
+app.use('/db_api/positions', positionsRouter());
+app.use('/db_api/departments', departmentsRouter());
+app.use('/db_api/system_roles', systemRolesRouter());
+app.use('/db_api/project_roles', projectRolesRouter());
+app.use('/db_api', dbRouter());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -62,7 +64,7 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

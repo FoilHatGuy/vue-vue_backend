@@ -2,7 +2,10 @@ const db = require('../db')
 const format = require('pg-format')
 module.exports = {
     async getAll() {
-        return db.query('SELECT * FROM users', [])
+        return db.query(`SELECT "id", "name", surname, patronymic, 
+(select COUNT(project_clearance.person) from project_clearance
+where project_clearance.person = users.id)::int::boolean
+as active FROM users`, [])
     },
 
     async insert(name, surn, patr) {

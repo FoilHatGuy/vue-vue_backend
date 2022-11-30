@@ -9,6 +9,14 @@ module.exports = {
                                 values($1) returning *`, [name])
     },
 
+    async delete(id) {
+        return db.query(`DELETE FROM positions WHERE positions.id = $1`, [id])
+    },
+
+    async update(id, name) {
+        return db.query(`update positions set "name" = $2 WHERE id = $1`, [id, name])
+    },
+
     async getId(id) {
         return db.query(`SELECT * FROM positions WHERE positions.id = $1`, [id])
     },

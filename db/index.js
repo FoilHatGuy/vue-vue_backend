@@ -6,11 +6,10 @@ const pool = new Pool(cred)
 
 module.exports = {
     async query(text, params) {
-        const start = Date.now()
-        const res = await pool.query(text, params)
-        const duration = Date.now() - start
+        // const start = Date.now()
+        // Date.now() - start;
         // console.log('executed query', { text, duration, rows: res.rows })
-        return res
+        return pool.query(text, params)
     },
     async getClient() {
         const client = await pool.connect()

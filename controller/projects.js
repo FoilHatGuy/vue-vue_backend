@@ -1,3 +1,5 @@
+// noinspection JSUnresolvedVariable
+
 const db = require('../db')
 const format = require("pg-format");
 module.exports = {
@@ -10,17 +12,17 @@ module.exports = {
     },
 
     async update(id, name, desc, start, end) {
-        return db.query(`update projects set "name" = $2, description = $3, start = $4, end = $5 
-WHERE id = $1`, [id, name, desc ? desc : null, start, end ? end : null])
+        //todo date+1 bruh why pg sets previous day
+        return db.query(`update projects set "name" = $2, description = $3, "start" = $4::date+1, "end" = $5::date+1
+WHERE id = $1`, [id, name, desc ? desc : null, start ? start : '01.01.2000', end ? end : null])
     },
 
     async updateUsers(id, add, del) {
-        let Plist = Array()
+        let Plist = []
         if (add.length > 0) {
             let added = add.map((v) => {
-                return [id, v.user, v.role]
+                return [id, v.id, v.role]
             });
-            console.log(add)
             let query1 = format('INSERT INTO project_clearance (project, person, access) VALUES %L', added);
             console.log(query1)
             Plist.push(db.query(query1, []))
@@ -29,7 +31,7 @@ WHERE id = $1`, [id, name, desc ? desc : null, start, end ? end : null])
             let deleted = del.map((val) => {
                 return val
             });
-            let query2 = format('DELETE FROM project_clearance WHERE person = $1 AND skill in (%L)', deleted);
+            let query2 = format('DELETE FROM project_clearance WHERE project = $1 AND person in (%L)', deleted);
             console.log(query2)
             Plist.push(db.query(query2, [id]))
         }
@@ -52,7 +54,7 @@ LEFT join
 (select users.id, users.name, users.surname, users.patronymic from users) as u
 ON p_cl.person = u.id
 LEFT join
-(select positions.name, positions.id from positions) as p
+(select project_roles.name, project_roles.id from project_roles) as p
 ON p_cl.access = p.id WHERE p_cl.project = $1`, [id])
     },
 

@@ -9,6 +9,15 @@ module.exports = {
                                 values($1)`, [name])
     },
 
+    async delete(id) {
+        return db.query(`DELETE FROM departments WHERE departments.id = $1`, [id])
+    },
+
+    async update(id, name) {
+        return db.query(`update departments set "name" = $2 WHERE id = $1`, [id, name])
+    },
+
+
     async getId(id) {
         return db.query(`SELECT * FROM departments WHERE departments.id = $1`, [id])
     },
