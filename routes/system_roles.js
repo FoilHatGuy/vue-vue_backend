@@ -14,11 +14,11 @@ function init() {
                 })
                 .then((result) => res.status(200).send(result))
                 .catch(() => {
-                    res.status(400).send({msg: "Error in database"})
+                    res.status(400).json({msg: "Error in database"})
                 })
         } else {
             console.log("Wrong name in ", req.body)
-            res.status(400).send({msg: "Wrong data"})
+            res.status(400).json({msg: "Wrong data"})
         }
     });
 
@@ -39,9 +39,9 @@ function init() {
                 }).then((r) => {
                 // console.log(r)
                 res.send(r)
-            }).catch((err) => res.status(400).send({msg: err}))
+            }).catch((err) => res.status(400).json({msg: err}))
         } else
-            res.status(400).send({msg: "Id is not numeric"})
+            res.status(400).json({msg: "Id is not numeric"})
     });
 
     //todo: patch doesn't work, dunno why

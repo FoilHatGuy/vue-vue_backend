@@ -21,7 +21,7 @@ function init() {
                 })
         } else {
             console.log("Wrong name in ", req.body)
-            res.status(400).send({msg: "Wrong data"})
+            res.status(400).json({msg: "Wrong data"})
         }
     });
 
@@ -46,9 +46,9 @@ function init() {
                 res.send(result)
             })
                 .catch((error) =>
-                    res.status(400).send({msg: error}))
+                    res.status(400).json({msg: error}))
         } else
-            res.status(400).send({msg: "Id is not numeric"})
+            res.status(400).json({msg: "Id is not numeric"})
     });
 
     router.post('/:id/edit', async (req, res) => {

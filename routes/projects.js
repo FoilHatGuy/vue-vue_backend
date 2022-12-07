@@ -14,7 +14,7 @@ function init() {
             let result = await ctrl.insert(req.body.name, req.body.description, req.body.start, req.body.end)
             res.status(200).send(result.rows)
         } else
-            res.status(400).send({msg: "Wrong data"})
+            res.status(400).json({msg: "Wrong data"})
     });
 
     router.get('/', async (req, res) => {
@@ -67,7 +67,7 @@ function init() {
             console.log(result)
             res.send(result)
         } else
-            res.status(400).send({msg: "Id is not numeric"})
+            res.status(400).json({msg: "Id is not numeric"})
     });
 
     return router

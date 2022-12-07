@@ -16,11 +16,11 @@ function init() {
                     res.status(200).send(result)
                 })
                 .catch(() => {
-                    res.status(400).send({msg: "Error in database"})
+                    res.status(400).json({msg: "Error in database"})
                 })
         } else {
             console.log("Wrong name in ", req.body)
-            res.status(400).send({msg: "Wrong data"})
+            res.status(400).json({msg: "Wrong data"})
         }
     });
 
@@ -41,7 +41,7 @@ function init() {
             console.log(result)
             res.send(result)
         } else
-            res.status(400).send({msg: "Id is not numeric"})
+            res.status(400).json({msg: "Id is not numeric"})
     });
 
     router.post('/:id/edit', async (req, res) => {

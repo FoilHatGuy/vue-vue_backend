@@ -2,14 +2,17 @@
 
 const createError = require('http-errors');
 const express = require('express');
+const session = require('express-session')
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+require('dotenv').config();
 // const bodyParser = require('body-parser');
 
 const indexRouter = require('./routes/index');
 const dbRouter = require('./routes/db_api');
+const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
 const skillsRouter = require('./routes/skills');
 const projectsRouter = require('./routes/projects');
@@ -17,6 +20,7 @@ const positionsRouter = require('./routes/positions');
 const departmentsRouter = require('./routes/departments');
 const systemRolesRouter = require('./routes/system_roles');
 const projectRolesRouter = require('./routes/project_roles');
+const {passport, isLoggedIn} = require('./oauth-passport')
 
 const app = express();
 
@@ -36,6 +40,12 @@ let corsOptions = {
   methods: "PATCH,PUT,DELETE",
   credentials: true
 }
+
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 // let config = {cors: corsOptions}
 app.options('*', (req,res, next)=> {
   console.log('options')
@@ -49,6 +59,8 @@ app.use(function(req, res, next) {
   next();
 });
 app.use('/', indexRouter);
+app.use('/auth', authRouter());
+// app.use('/db_api', isLoggedIn);
 app.use('/db_api/users', usersRouter());
 app.use('/db_api/skills', skillsRouter());
 app.use('/db_api/projects', projectsRouter());

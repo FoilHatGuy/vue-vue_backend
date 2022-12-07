@@ -1,8 +1,6 @@
 const { Pool } = require('pg')
-const fs = require('fs');
-const cred = JSON.parse(fs.readFileSync('cred.json', 'utf8'));
-// console.log(cred)
-const pool = new Pool(cred)
+require('dotenv').config();
+const pool = new Pool()
 
 module.exports = {
     async query(text, params) {

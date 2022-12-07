@@ -13,7 +13,7 @@ function init() {
 
             await ctrl.insert(req.body.name, req.body.surname, req.body.patronymic);
             res.status(200).send("result.rows")
-        } else res.status(400).send({msg: "Wrong data"})
+        } else res.status(400).json({msg: "Wrong data"})
     });
 
     router.get('/', async (req, res) => {
@@ -29,7 +29,7 @@ function init() {
             let result = await ctrl.getId(parseInt(req.params.id, 10))
             console.log(result)
             res.send(result.rows[0])
-        } else res.status(400).send({msg: "Id is not numeric"})
+        } else res.status(400).json({msg: "Id is not numeric"})
     });
 
     //todo: patch doesn't work, dunno why
@@ -76,7 +76,7 @@ function init() {
             ctrl.getIdProjects(parseInt(req.params.id, 10))
                 .then((r) => res.send(r.rows))
                 .catch((r) => res.status(400).send(r))
-        } else res.status(400).send({msg: "Id is not numeric"})
+        } else res.status(400).json({msg: "Id is not numeric"})
     });
 
     router.get('/:id/skills', async (req, res) => {
@@ -95,7 +95,7 @@ function init() {
                 res.status(400).send(err)
             }
 
-        } else res.status(400).send({msg: "Id is not numeric"})
+        } else res.status(400).json({msg: "Id is not numeric"})
     });
 
     return router
