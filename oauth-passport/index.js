@@ -1,12 +1,37 @@
 require('dotenv').config();
 const passport = require('passport')
+const {Strategy} = require("passport-custom");
+const argon2 = require('argon2')
 
+const passportCustom = require('passport-custom')
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
+const database = require('./db_controller')
 
 function isLoggedIn(req, res, next) {
     req.user ? next() : res.sendStatus(401);
 }
+
+passport.use('database', new passportCustom.Strategy(
+    (req, cb) => {
+        if (req.body.hasOwnProperty('login') && req.body.hasOwnProperty('password')) {
+            database.getPWByLogin(req.body.login).then((res) => {
+                return argon2.verify(res, req.body.password)
+            }).then((res) => {
+                return res ? req.body.login : null
+            })
+                .then((res) => {
+                    if (res) cb(null, res)
+                    else throw 'PasswordIncorrect'
+                })
+                .catch((err) => {
+                    console.log(err)
+                    cb(err)
+                })
+        }
+    }
+))
+
 
 passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
@@ -20,12 +45,12 @@ passport.use(new GoogleStrategy({
 ));
 
 passport.serializeUser(function (user, done) {
-    console.log('SERIALISE')
+    console.log('SERIALIZE')
     done(null, user);
 });
 
 passport.deserializeUser(function (user, done) {
-    console.log('DESERIALISE')
+    console.log('DESERIALIZE')
     done(null, user);
 });
 

@@ -42,8 +42,8 @@ let corsOptions = {
 }
 
 app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.initialize({}));
+app.use(passport.session({}));
 
 
 // let config = {cors: corsOptions}

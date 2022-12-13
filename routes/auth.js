@@ -4,14 +4,13 @@ const {passport, isLoggedIn} = require('../oauth-passport')
 function init() {
     const router = express.Router();
 
-    router.get('/google', (req, res) => {
+    router.get('/google/link', (req, res) => {
         res.send('<a href="/auth">Authenticate with Google</a>');
     });
 
-    router.get('/',
+    router.post('/google',
         passport.authenticate('google', { scope: [ 'email', 'profile' ] }
         ));
-
 
     router.get('/login/fail', (req, res, next)=> {
         res.send('bad')
@@ -20,10 +19,6 @@ function init() {
     router.post('/login', (req, res, next)=> {
         res.json({state: 'ok'})
     });
-
-    router.get('/',
-        passport.authenticate('google', { scope: [ 'email', 'profile' ] }
-        ));
 
     router.get('/success',
         passport.authenticate( 'google', {
