@@ -1,7 +1,7 @@
 const { Pool } = require('pg')
 require('dotenv').config();
 const pool = new Pool()
-
+console.log(process.env.PGHOST)
 module.exports = {
     async query(text, params) {
         // const start = Date.now()
