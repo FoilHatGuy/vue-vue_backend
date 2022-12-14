@@ -1,6 +1,5 @@
 // noinspection JSUnresolvedVariable
 
-const createError = require('http-errors');
 const express = require('express');
 const session = require('express-session')
 const path = require('path');
@@ -10,7 +9,6 @@ const cors = require('cors');
 require('dotenv').config();
 // const bodyParser = require('body-parser');
 
-const indexRouter = require('./routes/index');
 const dbRouter = require('./routes/db_api');
 const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
@@ -26,7 +24,6 @@ const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -35,7 +32,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 let corsOptions = {
-  origin: "*",
+  origin: "http://192.168.6.124:5173",
   headers: "Content-Type",
   methods: "PATCH,PUT,DELETE",
   credentials: true
@@ -52,13 +49,16 @@ app.options('*', (req,res, next)=> {
   next()
 }, cors(corsOptions));
 app.use(function(req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*")
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length")
+  res.setHeader("Access-Control-Allow-Credentials", "true")
+  res.setHeader("Access-Control-Allow-Origin", "http://192.168.6.124:5173")
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length,Set-Cookie")
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,PUT,DELETE,OPTIONS")
+  res.setHeader("Access-Control-Expose-Headers", "Set-Cookie")
+  res.cookie('SameSite','None')
+
   // console.log("set")
   next();
 });
-app.use('/', indexRouter);
 app.use('/auth', authRouter());
 // app.use('/db_api', isLoggedIn);
 app.use('/db_api/users', usersRouter());
@@ -72,7 +72,7 @@ app.use('/db_api', dbRouter());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+  res.sendStatus(404)
 });
 
 // error handler

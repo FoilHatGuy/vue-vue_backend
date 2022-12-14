@@ -17,7 +17,8 @@ function init() {
     });
 
     router.post('/login', (req, res, next)=> {
-        res.json({state: 'ok'})
+        res.cookie('logged-in', 'true, here is my token')
+        res.json({state: 'ok', token: 'this is token'})
     });
 
     router.get('/success',
