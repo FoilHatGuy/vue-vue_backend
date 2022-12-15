@@ -1,7 +1,7 @@
 const { Pool } = require('pg')
 require('dotenv').config();
 const pool = new Pool()
-console.log(process.env.PGHOST)
+console.log("connecting to db on ", process.env.PGHOST, ":", process.env.PGPORT)
 module.exports = {
     async query(text, params) {
         // const start = Date.now()
