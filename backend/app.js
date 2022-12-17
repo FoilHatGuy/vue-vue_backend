@@ -22,7 +22,7 @@ const {passport, isLoggedIn} = require('./oauth-passport')
 // require("./email")(config.mail);
 // const maler =require("./email")();
 
-mailer.send()
+// mailer.send()
 const app = express();
 
 // view engine setup
