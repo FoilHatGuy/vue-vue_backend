@@ -1,6 +1,7 @@
 const express = require('express');
 require('../db');
 const auth = require('../oauth-passport')
+const {passport} = require("../oauth-passport");
 function init() {
     const router = express.Router();
 
@@ -38,8 +39,11 @@ function init() {
             res.sendStatus(400)
     });
 
-    router.post('/login/internal', async (req, res, next)=> {
-
+    router.post('/login/internal',  async (req, res, next)=> {
+        if((req.body.hasOwnProperty("login")  ||
+            req.body.hasOwnProperty("email")) &&
+            req.body.hasOwnProperty("password"))
+        auth.passport.authenticate('database', {}, (r)=>{console.log(r)})
         res.cookie('logged-in', 'true, here is my token')
         res.json({state: 'ok', token: 'this is token'})
     });

@@ -11,6 +11,7 @@ const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const database = require('./db_controller')
 
 function isLoggedIn(req, res, next) {
+    console.log(req.session)
     req.user ? next() : res.sendStatus(401);
 }
 
@@ -52,11 +53,10 @@ passport.use('database', new LocalStrategy({},
             database.getPWByLogin(req.body.login).then((res) => {
                 return argon2.verify(res, req.body.password)
             }).then((res) => {
-                return res ? req.body.login : null
+                return res ? req.body.login : false
             })
                 .then((res) => {
-                    if (res) cb(null, res)
-                    else throw 'PasswordIncorrect'
+                    cb(null, res)
                 })
                 .catch((err) => {
                     console.log(err)

@@ -1,13 +1,19 @@
 const nodemailer = require('nodemailer');
 const pug = require('pug');
 
+let def;
+
 class MailSender {
     constructor(userSender) {
+        if (def) throw new Error("Double call")
         this.user = userSender.user;
         this.pass = userSender.pass;
 
         this.setTransport(userSender)
+        def = this;
     }
+
+
 
     setTransport(user) {
         this.transporter = nodemailer.createTransport({
@@ -44,4 +50,8 @@ class MailSender {
     }
 }
 
-module.exports = MailSender;
+function getMailer(userSender) {
+    return def || new MailSender(userSender)
+}
+
+module.exports = getMailer;

@@ -19,7 +19,10 @@ const departmentsRouter = require('./routes/departments');
 const systemRolesRouter = require('./routes/system_roles');
 const projectRolesRouter = require('./routes/project_roles');
 const {passport, isLoggedIn} = require('./oauth-passport')
+// require("./email")(config.mail);
+// const maler =require("./email")();
 
+mailer.send()
 const app = express();
 
 // view engine setup
@@ -62,7 +65,7 @@ app.use(function (req, res, next) {
     next();
 });
 app.use('/auth', authRouter());
-// app.use('/db_api', isLoggedIn);
+app.use('/db_api', isLoggedIn);
 app.use('/db_api/users', usersRouter());
 app.use('/db_api/skills', skillsRouter());
 app.use('/db_api/projects', projectsRouter());
