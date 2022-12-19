@@ -70,10 +70,10 @@ module.exports = {
                                  where user_x_project_x_role.user = $1) ::int::boolean
 as active
                          FROM USERS as u
-                                  LEFT JOIN (SELECT P.pos_id AS P_ID, P.name AS pos_n FROM POSITIONS AS P) AS POS
+                                  LEFT JOIN (SELECT P.pos_id AS P_ID, P."name" AS pos_n FROM POSITIONS AS P) AS POS
                                             ON u.position = POS.P_ID
                                   LEFT JOIN
-                                  (SELECT D.dep_id AS D_ID, D.name AS dep_n FROM DEPARTMENTS AS D) AS DEP
+                                  (SELECT D.dep_id AS D_ID, D."name" AS dep_n FROM DEPARTMENTS AS D) AS DEP
                                   ON u.department = DEP.D_ID
                          WHERE u.user_id = $1`, [id])
 
@@ -83,7 +83,7 @@ as active
         return db.query(`SELECT "project", project_id as "id", ac.Access
                          FROM USERS
                                   LEFT join
-                              (SELECT user     AS U_PC_ID,
+                              (SELECT "user"     AS U_PC_ID,
                                       project_role AS A_PC_ID,
                                       project  AS P_PC_ID
                                FROM user_x_project_x_role) AS PR_CL
@@ -105,7 +105,7 @@ as active
         return db.query(`SELECT skill, skill_id as "id"
                          FROM USERS
                                   LEFT join
-                              (SELECT user  AS U_SA_ID,
+                              (SELECT "user"  AS U_SA_ID,
                                       skill AS S_SA_ID
                                FROM user_x_skill) AS S_A
                                   LEFT join

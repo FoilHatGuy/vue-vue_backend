@@ -76,7 +76,7 @@ function init() {
             ctrl.getIdProjects(parseInt(req.params.id, 10))
                 .then((r) => res.send(r.rows))
                 .catch((r) => {
-                    console.log(req, "\n\n\n", r)
+                    console.log(req.body, "\n\n\n", r)
                     res.status(400).send(r)
                 })
         } else res.status(400).json({msg: "Id is not numeric"})
@@ -94,7 +94,7 @@ function init() {
                         return r
                     }).then((r) => res.send(r.rows))
                     .catch((r) => {
-                        console.log(req, "\n\n\n", r)
+                        console.log(req.body, "\n\n\n", r)
                         res.status(400).send(r)
                     })
             } catch (err) {
