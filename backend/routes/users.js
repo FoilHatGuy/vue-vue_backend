@@ -75,7 +75,10 @@ function init() {
         if (parseInt(req.params.id, 10)) {
             ctrl.getIdProjects(parseInt(req.params.id, 10))
                 .then((r) => res.send(r.rows))
-                .catch((r) => res.status(400).send(r))
+                .catch((r) => {
+                    console.log(req, "\n\n\n", r)
+                    res.status(400).send(r)
+                })
         } else res.status(400).json({msg: "Id is not numeric"})
     });
 
@@ -90,7 +93,10 @@ function init() {
                         if (r.rows[0].skill === null) r.rows = []
                         return r
                     }).then((r) => res.send(r.rows))
-                    .catch((err) => res.status(400).send(err))
+                    .catch((r) => {
+                        console.log(req, "\n\n\n", r)
+                        res.status(400).send(r)
+                    })
             } catch (err) {
                 res.status(400).send(err)
             }
