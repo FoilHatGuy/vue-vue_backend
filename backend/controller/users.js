@@ -41,7 +41,7 @@ module.exports = {
                 return [id, val]
             });
             console.log(add)
-            let query1 = format('INSERT INTO user_x_skill (user, skill) VALUES %L', added);
+            let query1 = format('INSERT INTO user_x_skill ("user", skill) VALUES %L', added);
             console.log(query1)
             Plist.push(db.query(query1, []))
         }
@@ -57,7 +57,7 @@ module.exports = {
     },
 
     async getId(id) {
-        return db.query(`SELECT "user_id",
+        return db.query(`SELECT "user_id" as "id",
                                 "name",
                                 SURNAME,
                                 PATRONYMIC,

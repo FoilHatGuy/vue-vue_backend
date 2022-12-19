@@ -29,7 +29,7 @@ module.exports = {
     },
 
     async getIdUsers(id) {
-        return db.query(`select users.user_id, users.name, users.surname, users.patronymic
+        return db.query(`select users.user_id as "id", users.name, users.surname, users.patronymic
                          from users
                          WHERE users.department = $1`, [id])
     }

@@ -4,7 +4,7 @@ const db = require('../db')
 const format = require("pg-format");
 module.exports = {
     async getAll() {
-        return await db.query('SELECT * FROM projects', [])
+        return await db.query('SELECT proj_id as "id", name, start,"end", description FROM projects', [])
     },
 
     async delete(id) {
@@ -57,7 +57,7 @@ module.exports = {
     },
 
     async getIdUsers(id) {
-        return db.query(`SELECT u.user_id, u.name, u.surname, u.patronymic, p_cl.project_role as id_role, p.name as role
+        return db.query(`SELECT u.user_id as "id", u.name, u.surname, u.patronymic, p_cl.project_role as id_role, p.name as role
                          FROM user_x_project_x_role as p_cl
                                   LEFT join
                               (select users.user_id, users.name, users.surname, users.patronymic from users) as u

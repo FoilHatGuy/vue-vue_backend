@@ -1,7 +1,7 @@
 const db = require('../db')
 module.exports = {
     async getAll() {
-        return await db.query('SELECT * FROM system_roles', [])
+        return await db.query('SELECT system_role_id as "id", system_roles.* FROM system_roles', [])
     },
 
     async insert(name) {
@@ -10,7 +10,7 @@ module.exports = {
     },
 
     async getId(id) {
-        return db.query(`SELECT *
+        return db.query(`SELECT system_role_id as "id", name
                          FROM system_roles
                          WHERE system_roles.system_role_id = $1`, [id])
     },
@@ -29,7 +29,7 @@ module.exports = {
     },
 
     async getIdUsers(id) {
-        return db.query(`SELECT u.user_id, u.name, u.surname, u.patronymic
+        return db.query(`SELECT u.user_id as "id", u.name, u.surname, u.patronymic
                          FROM user_x_sys_role as s_cl
                                   LEFT join
                               (select users.user_id, users.name, users.surname, users.patronymic from users) as u

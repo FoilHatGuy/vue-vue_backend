@@ -1,7 +1,7 @@
 const db = require('../db')
 module.exports = {
     async getAll() {
-        return await db.query('SELECT * FROM project_roles', [])
+        return await db.query('SELECT proj_role_id as "id", project_roles.* FROM project_roles', [])
     },
 
     async insert(name) {
@@ -10,7 +10,7 @@ module.exports = {
     },
 
     async getId(id) {
-        return db.query(`SELECT *
+        return db.query(`SELECT proj_role_id as "id", project_roles.*
                          FROM project_roles
                          WHERE project_roles.proj_role_id = $1`, [id])
     },
