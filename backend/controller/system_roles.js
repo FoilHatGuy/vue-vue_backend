@@ -33,7 +33,7 @@ module.exports = {
                          FROM user_x_sys_role as s_cl
                                   LEFT join
                               (select users.user_id, users.name, users.surname, users.patronymic from users) as u
-                              ON user = u.user_id
+                              ON "user" = u.user_id
                          WHERE s_cl.system_role = $1`, [id])
     }
 }

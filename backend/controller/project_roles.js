@@ -32,7 +32,7 @@ module.exports = {
                          FROM user_x_project_x_role as p_cl
                                   LEFT join
                               (select users.user_id, users.name, users.surname, users.patronymic from users) as u
-                              ON user = u.user_id
+                              ON "user" = u.user_id
                          WHERE p_cl.project_role = $1`, [id])
     }
 }

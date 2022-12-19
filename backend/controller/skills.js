@@ -31,6 +31,6 @@ module.exports = {
         return db.query(`SELECT u.user_id as "id", u.name, u.surname, u.patronymic FROM user_x_skill as s_a
 LEFT join
 (select users.user_id, users.name, users.surname, users.patronymic from users) as u
-ON user = u.user_id WHERE s_a.skill = $1`, [id])
+ON "user" = u.user_id WHERE s_a.skill = $1`, [id])
     }
 }

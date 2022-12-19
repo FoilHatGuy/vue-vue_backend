@@ -23,7 +23,7 @@ module.exports = {
     },
 
     async getId(id) {
-        return db.query(`SELECT *
+        return db.query(`SELECT positions.pos_id as "id", positions.*
                          FROM positions
                          WHERE positions.pos_id = $1`, [id])
     },

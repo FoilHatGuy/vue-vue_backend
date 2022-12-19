@@ -37,7 +37,7 @@ module.exports = {
             let deleted = del.map((val) => {
                 return val
             });
-            let query2 = format('DELETE FROM user_x_project_x_role WHERE project = $1 AND user in (%L)', deleted);
+            let query2 = format('DELETE FROM user_x_project_x_role WHERE project = $1 AND "user" in (%L)', deleted);
             console.log(query2)
             Plist.push(db.query(query2, [id]))
         }
