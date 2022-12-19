@@ -35,9 +35,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 let corsOptions = {
-    origin: "http://192.168.6.124:5173",
+    origin: "http://localhost:80",
     headers: "Content-Type",
-    methods: "PATCH,PUT,DELETE",
+    methods: "GET,POST,PATCH,PUT,DELETE,OPTIONS",
     credentials: true
 }
 
@@ -49,21 +49,21 @@ app.use(passport.session({}));
 
 
 // let config = {cors: corsOptions}
-app.options('*', (req, res, next) => {
+app.all('*', (req, res, next) => {
     console.log('options')
     next()
 }, cors(corsOptions));
-app.use(function (req, res, next) {
-    res.setHeader("Access-Control-Allow-Credentials", "true")
-    res.setHeader("Access-Control-Allow-Origin", "http://192.168.6.124:5173")
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length,Set-Cookie")
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,PUT,DELETE,OPTIONS")
-    res.setHeader("Access-Control-Expose-Headers", "Set-Cookie")
-    res.cookie('SameSite', 'None')
-
-    // console.log("set")
-    next();
-});
+// app.use(function (req, res, next) {
+//     res.setHeader("Access-Control-Allow-Credentials", "true")
+//     res.setHeader("Access-Control-Allow-Origin", "http://192.168.6.124:5173")
+//     res.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length,Set-Cookie")
+//     res.setHeader("Access-Control-Allow-Methods", "GET,POST,PATCH,PUT,DELETE,OPTIONS")
+//     res.setHeader("Access-Control-Expose-Headers", "Set-Cookie")
+//     res.cookie('SameSite', 'None')
+//
+//     // console.log("set")
+//     next();
+// });
 app.use('/auth', authRouter());
 app.use('/db_api', isLoggedIn);
 app.use('/db_api/users', usersRouter());
