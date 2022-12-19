@@ -57,7 +57,7 @@ module.exports = {
     },
 
     async getId(id) {
-        return db.query(`SELECT "id",
+        return db.query(`SELECT "user_id",
                                 "name",
                                 SURNAME,
                                 PATRONYMIC,
@@ -70,7 +70,7 @@ module.exports = {
                                  where user_x_project_x_role.user = $1) ::int::boolean
 as active
                          FROM USERS as u
-                                  LEFT JOIN (SELECT P.proj_id AS P_ID, P.name AS pos_n FROM POSITIONS AS P) AS POS
+                                  LEFT JOIN (SELECT P.pos_id AS P_ID, P.name AS pos_n FROM POSITIONS AS P) AS POS
                                             ON u.position = POS.P_ID
                                   LEFT JOIN
                                   (SELECT D.dep_id AS D_ID, D.name AS dep_n FROM DEPARTMENTS AS D) AS DEP
@@ -84,7 +84,7 @@ as active
                          FROM USERS
                                   LEFT join
                               (SELECT user     AS U_PC_ID,
-                                      "access" AS A_PC_ID,
+                                      project_role AS A_PC_ID,
                                       project  AS P_PC_ID
                                FROM user_x_project_x_role) AS PR_CL
                                   LEFT join
@@ -92,10 +92,10 @@ as active
                                       P."name"  AS "project"
                                FROM PROJECTS AS P) AS pr ON P_PC_ID = project_id
                                   LEFT join
-                              (SELECT A.role_id AS A_ID,
+                              (SELECT A.proj_role_id AS A_ID,
                                       A."name"  AS "access"
                                FROM Project_roles AS A) AS ac ON A_PC_ID = A_ID
-                              ON "id" = U_PC_ID
+                              ON "user_id" = U_PC_ID
                          WHERE USERS.user_id = $1`, [id])
 
 
@@ -109,11 +109,11 @@ as active
                                       skill AS S_SA_ID
                                FROM user_x_skill) AS S_A
                                   LEFT join
-                              (SELECT S."id"   AS skill_id,
+                              (SELECT S."skill_id"   AS skill_id,
                                       S."name" AS "skill"
                                FROM skills AS s) AS sk_t ON S_SA_ID = skill_id
-                              ON "id" = U_SA_ID
-                         WHERE USERS."id" = $1`, [id])
+                              ON "user_id" = U_SA_ID
+                         WHERE USERS."user_id" = $1`, [id])
 
     }
 }
