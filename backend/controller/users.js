@@ -80,7 +80,7 @@ as active
     },
 
     async getIdProjects(id) {
-        return db.query(`SELECT "project", project_id, ac.Access
+        return db.query(`SELECT "project", project_id as "id", ac.Access
                          FROM USERS
                                   LEFT join
                               (SELECT user     AS U_PC_ID,
@@ -102,7 +102,7 @@ as active
     },
 
     async getIdSkills(id) {
-        return db.query(`SELECT skill, skill_id
+        return db.query(`SELECT skill, skill_id as "id"
                          FROM USERS
                                   LEFT join
                               (SELECT user  AS U_SA_ID,
