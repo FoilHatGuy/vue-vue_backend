@@ -12,7 +12,7 @@ const database = require('./db_controller')
 
 function isLoggedIn(req, res, next) {
     console.log(req.session)
-    req.user ? next() : res.sendStatus(401);
+    req.user ? next() : next()//res.sendStatus(401);
 }
 
 async function registerActive(login, password, email) {
