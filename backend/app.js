@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 let corsOptions = {
-    origin: "http://localhost:80",
+    origin: "http://localhost",
     headers: "Content-Type",
     methods: "GET,POST,PATCH,PUT,DELETE,OPTIONS",
     credentials: true
