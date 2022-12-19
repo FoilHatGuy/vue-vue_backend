@@ -1,7 +1,7 @@
 const db = require('../db')
 module.exports = {
     async getAll() {
-        return await db.query('SELECT * FROM positions', [])
+        return await db.query('SELECT positions.pos_id as "id", positions.* FROM positions', [])
     },
 
     async insert(name) {
