@@ -6,7 +6,7 @@ const schema = require('../controller/requests')
 function init() {
     const router = express.Router();
     router.get('/', async (req, res) => {
-        console.log(schema)
+        // console.log(schema)
         res.send(schema)
     });
     return router

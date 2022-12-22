@@ -26,7 +26,7 @@ function init() {
 
     router.get('/', async (req, res) => {
         let result = await ctrl.getAll()
-        console.log(result.rows)
+        // console.log(result.rows)
 
         res.send(result.rows)
     });
@@ -40,7 +40,7 @@ function init() {
                 .then((r) => {
                     return {project_role: r[0].rows[0], users: r[1].rows}
                 }).then((r) => {
-                console.log(r)
+                // console.log(r)
                 res.send(r)
             }).catch((err) => res.status(400).json({msg: err}))
         } else
@@ -56,15 +56,15 @@ function init() {
     });
 
     router.post('/:id/delete', async (req, res) => {
-        console.log(req.body, req.params)
+        // console.log(req.body, req.params)
         let user = ctrl.delete(req.params.id)
         user.then((r) => {
-            console.log(r);
+            // console.log(r);
             return r
         })
             .then((r) => res.status(200).send(r))
             .catch((r) => {
-                console.log(r);
+                // console.log(r);
                 res.status(400).send(r)
             })
     });

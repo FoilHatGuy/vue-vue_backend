@@ -4,10 +4,24 @@ module.exports = {
     getPWByLogin: async (login) => {
         return db.query('SELECT acc.active, acc.password FROM accounts AS acc WHERE acc.login = $1', [login]).then(
             (res) => {
-                console.log(res)
                 if (res.rows.length > 0) {
                     if (res.rows[0].active)
                         return res.rows[0].password
+                }
+                throw 'noUser'
+            }).catch((err) => {
+            console.log(err)
+            throw 'DBError'
+        })
+    },
+
+    getUserInfo: async (login) => {
+        console.log('INFO')
+        return db.query('SELECT * FROM accounts AS acc WHERE acc.login = $1', [login]).then(
+            (res) => {
+                if (res.rows.length > 0) {
+                    if (res.rows[0].active)
+                        return res.rows[0]
                 }
                 throw 'noUser'
             }).catch((err) => {

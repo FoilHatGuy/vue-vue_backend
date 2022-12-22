@@ -18,13 +18,13 @@ function init() {
 
     router.get('/', async (req, res) => {
         let result = await ctrl.getAll()
-        console.log(result.rows)
+        // console.log(result.rows)
 
         res.send(result.rows)
     });
 
     router.post('/:id/edit', async (req, res) => {
-        console.log(req.body)
+        // console.log(req.body)
         ctrl.update(req.params.id, req.body.name,
             req.body.description)
             .then((r) => res.status(200).send(r))
@@ -54,7 +54,7 @@ function init() {
             users = users.rows
 
             let result = {skill: skill, users: users}
-            console.log(result)
+            // console.log(result)
             res.send(result)
         } else
             res.status(400).json({msg: "Id is not numeric"})

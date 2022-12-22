@@ -9,7 +9,7 @@ function init() {
         if (req.body.name && req.body.name.length > 0) {
             ctrl.insert(req.body.name)
                 .then((res) => {
-                    console.log(res.rows)
+                    // console.log(res.rows)
                     return res.rows
                 })
                 .then((result) => res.status(200).send(result))
@@ -24,7 +24,7 @@ function init() {
 
     router.get('/', async (req, res) => {
         let result = await ctrl.getAll()
-        console.log(result.rows)
+        // console.log(result.rows)
 
         res.send(result.rows)
     });
@@ -46,7 +46,7 @@ function init() {
 
     //todo: patch doesn't work, dunno why
     router.post('/:id/edit', async (req, res) => {
-        console.log(req.body)
+        // console.log(req.body)
         ctrl.update(req.params.id, req.body.name)
             .then((r) => res.status(200).send(r))
             .catch((r) => res.status(400).send(r))

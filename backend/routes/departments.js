@@ -9,7 +9,7 @@ function init() {
         if (req.body.name && req.body.name.length > 0) {
             ctrl.insert(req.body.name)
                 .then((res) => {
-                    console.log(res.rows)
+                    // console.log(res.rows)
                     return res.rows
                 })
                 .then((result) => {
@@ -26,7 +26,7 @@ function init() {
 
     router.get('/', async (req, res) => {
         let result = await ctrl.getAll()
-        console.log(result.rows)
+        // console.log(result.rows)
 
         res.send(result.rows)
     });
@@ -38,14 +38,14 @@ function init() {
             let department = await ctrl.getId(parseInt(req.params.id, 10))
             let users = await ctrl.getIdUsers(parseInt(req.params.id, 10))
             let result = {department: department.rows[0], users: users.rows}
-            console.log(result)
+            // console.log(result)
             res.send(result)
         } else
             res.status(400).json({msg: "Id is not numeric"})
     });
 
     router.post('/:id/edit', async (req, res) => {
-        console.log(req.body)
+        // console.log(req.body)
         ctrl.update(req.params.id, req.body.name)
             .then((r) => res.status(200).send(r))
             .catch((r) => {

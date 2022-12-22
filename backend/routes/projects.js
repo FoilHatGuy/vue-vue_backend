@@ -30,7 +30,7 @@ function init() {
 
     router.post('/:id/edit', async (req, res) => {
         let promises = []
-        console.log(req.body)
+        // console.log(req.body)
         promises.push(ctrl.update(req.params.id, req.body.name,
             req.body.description, req.body.start,
             req.body.end))
@@ -64,7 +64,7 @@ function init() {
             let users = await ctrl.getIdUsers(parseInt(req.params.id, 10))
             users = users.rows
             let result = {project: project, users: users}
-            console.log(result)
+            // console.log(result)
             res.send(result)
         } else
             res.status(400).json({msg: "Id is not numeric"})

@@ -41,9 +41,12 @@ let corsOptions = {
     credentials: true
 }
 
-app.use(session({secret: process.env.SESSION_SECRET,
+app.use(session({
+    secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true}));
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 1000 }}
+));
 app.use(passport.initialize({}));
 app.use(passport.session({}));
 
@@ -65,7 +68,9 @@ app.all('*', (req, res, next) => {
 //     next();
 // });
 app.use('/auth', authRouter());
+
 app.use('/db_api', isLoggedIn);
+
 app.use('/db_api/users', usersRouter());
 app.use('/db_api/skills', skillsRouter());
 app.use('/db_api/projects', projectsRouter());
